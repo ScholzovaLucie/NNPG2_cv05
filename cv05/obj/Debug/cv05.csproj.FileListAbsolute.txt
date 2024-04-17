@@ -1,0 +1,10 @@
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\bin\Debug\cv05.exe.config
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\bin\Debug\cv05.exe
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\bin\Debug\cv05.pdb
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.csproj.AssemblyReference.cache
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.Form1.resources
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.Properties.Resources.resources
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.csproj.GenerateResource.cache
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.csproj.CoreCompileInputs.cache
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.exe
+C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.pdb
