@@ -55,23 +55,25 @@
             // 
             // splitContainer
             // 
-            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.splitContainer.Location = new System.Drawing.Point(0, 30);
+            this.splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer.Location = new System.Drawing.Point(0, 19);
             this.splitContainer.Name = "splitContainer";
             // 
             // splitContainer.Panel1
             // 
             this.splitContainer.Panel1.AutoScroll = true;
+            this.splitContainer.Panel1.Resize += Panel1_Resize;
             // 
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.AutoScroll = true;
-            this.splitContainer.Size = new System.Drawing.Size(800, 420);
-            this.splitContainer.SplitterDistance = 266;
+            this.splitContainer.Size = new System.Drawing.Size(640, 341);
+            this.splitContainer.SplitterDistance = 212;
             this.splitContainer.TabIndex = 0;
             // 
             // fileMenu
             // 
+            this.fileMenu.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.fileMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.souborToolStripMenuItem,
             this.zobrazeníToolStripMenuItem});
@@ -138,12 +140,14 @@
             this.centrToolStripMenuItem.Name = "centrToolStripMenuItem";
             this.centrToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.centrToolStripMenuItem.Text = "Centr";
+            this.centrToolStripMenuItem.Click += centrToolStripMenuItem_Click;
             // 
             // levýHorníToolStripMenuItem
             // 
             this.levýHorníToolStripMenuItem.Name = "levýHorníToolStripMenuItem";
             this.levýHorníToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.levýHorníToolStripMenuItem.Text = "Levý horní";
+            this.levýHorníToolStripMenuItem.Click += levýHorníToolStripMenuItem_Click;
             // 
             // velikostToolStripMenuItem
             // 
@@ -160,24 +164,28 @@
             this.originálníTiskováVelikostToolStripMenuItem.Name = "originálníTiskováVelikostToolStripMenuItem";
             this.originálníTiskováVelikostToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.originálníTiskováVelikostToolStripMenuItem.Text = "originální tisková velikost";
+            this.originálníTiskováVelikostToolStripMenuItem.Click += originálníTiskováVelikostToolStripMenuItem_Click;
             // 
             // originálníPixelováVelikostToolStripMenuItem
             // 
             this.originálníPixelováVelikostToolStripMenuItem.Name = "originálníPixelováVelikostToolStripMenuItem";
             this.originálníPixelováVelikostToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.originálníPixelováVelikostToolStripMenuItem.Text = "originální pixelová velikost";
+            this.originálníPixelováVelikostToolStripMenuItem.Click += originálníPixelováVelikostToolStripMenuItem_Click;
             // 
             // roztaženíPřesPlochuToolStripMenuItem
             // 
             this.roztaženíPřesPlochuToolStripMenuItem.Name = "roztaženíPřesPlochuToolStripMenuItem";
             this.roztaženíPřesPlochuToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.roztaženíPřesPlochuToolStripMenuItem.Text = " roztažení přes plochu";
+            this.roztaženíPřesPlochuToolStripMenuItem.Click += roztaženíPřesPlochuToolStripMenuItem_Click;
             // 
             // informaceToolStripMenuItem
             // 
             this.informaceToolStripMenuItem.Name = "informaceToolStripMenuItem";
             this.informaceToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.informaceToolStripMenuItem.Text = "Informace ";
+            this.informaceToolStripMenuItem.Click += informaceToolStripMenuItem_Click;
             // 
             // otočeníToolStripMenuItem
             // 
@@ -194,24 +202,28 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(100, 22);
             this.toolStripMenuItem2.Text = "90°";
+            this.toolStripMenuItem2.Click += toolStripMenuItem2_Click;
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(100, 22);
             this.toolStripMenuItem3.Text = "180°";
+            this.toolStripMenuItem3.Click += toolStripMenuItem3_Click;
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
             this.toolStripMenuItem4.Size = new System.Drawing.Size(100, 22);
             this.toolStripMenuItem4.Text = " 270°";
+            this.toolStripMenuItem4.Click += toolStripMenuItem4_Click;
             // 
             // histogramToolStripMenuItem
             // 
             this.histogramToolStripMenuItem.Name = "histogramToolStripMenuItem";
             this.histogramToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.histogramToolStripMenuItem.Text = "Histogram";
+            this.histogramToolStripMenuItem.Click += histogramToolStripMenuItem_Click;
             // 
             // Form1
             // 
