@@ -83,16 +83,21 @@ namespace cv05
             ShowImageInDetailPanel(pictureBox.Image);
         }
 
-        private void ShowImageInDetailPanel(Image image)
+      private void ShowImageInDetailPanel(Image image)
         {
             PictureBox detailPictureBox = new PictureBox();
             detailPictureBox.Image = image;
-            detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Default mode
-            detailPictureBox.Dock = DockStyle.Fill;
-            detailPictureBox.Location = new Point(0, 0);
+            detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Obrázek se přizpůsobí, ale zachová poměry stran
+            detailPictureBox.Dock = DockStyle.Fill; // Vyplní celý dostupný prostor
+
+            // Obrázek bude scrollovatelný pouze pokud je větší než Panel2
+            Panel scrollablePanel = new Panel();
+            scrollablePanel.AutoScroll = true;
+            scrollablePanel.Dock = DockStyle.Fill; // Vyplní celý Panel2
+            scrollablePanel.Controls.Add(detailPictureBox);
+
             splitContainer.Panel2.Controls.Clear();
-            splitContainer.Panel2.Controls.Add(detailPictureBox);
-            splitContainer.Panel2.AutoScroll = true;
+            splitContainer.Panel2.Controls.Add(scrollablePanel);
         }
 
         private void přidejObrázekToolStripMenuItem_Click(object sender, EventArgs e)
@@ -112,36 +117,79 @@ namespace cv05
 
         private void originálníPixelováVelikostToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetPictureBoxSizeMode(PictureBoxSizeMode.AutoSize);
+            SetImageSizeMode(PictureBoxSizeMode.AutoSize);
         }
 
         private void originálníTiskováVelikostToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetPictureBoxSizeMode(PictureBoxSizeMode.Normal);
+            SetImageSizeMode(PictureBoxSizeMode.Normal);
         }
 
         private void roztaženíPřesPlochuToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetPictureBoxSizeMode(PictureBoxSizeMode.StretchImage);
+            SetImageSizeMode(PictureBoxSizeMode.StretchImage);
         }
 
         private void centrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetPictureBoxSizeMode(PictureBoxSizeMode.CenterImage);
+            SetImagePosition(true);
         }
 
         private void levýHorníToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetPictureBoxSizeMode(PictureBoxSizeMode.Normal);
+            SetImagePosition(false);
         }
 
-        private void SetPictureBoxSizeMode(PictureBoxSizeMode sizeMode)
+        private void SetImagePosition(bool centerImage)
         {
-            if (splitContainer.Panel2.Controls.Count > 0)
+            if (splitContainer.Panel2.Controls.Count > 0 &&
+                splitContainer.Panel2.Controls[0] is Panel scrollPanel &&
+                scrollPanel.Controls.Count > 0 &&
+                scrollPanel.Controls[0] is PictureBox pictureBox)
             {
-                var pictureBox = (PictureBox)splitContainer.Panel2.Controls[0];
-                pictureBox.SizeMode = sizeMode;
+                if (centerImage)
+                {
+                    pictureBox.Dock = DockStyle.Fill; // Centrování obrázku v panelu
+                }
+                else
+                {
+                    pictureBox.Dock = DockStyle.None; // Necentrování, umístění v levém horním rohu
+                    pictureBox.Location = new Point(0, 0); // Pevné umístění v levém horním rohu
+                }
             }
+        }
+
+        private void SetImageSizeMode(PictureBoxSizeMode sizeMode)
+        {
+            if (splitContainer.Panel2.Controls.Count > 0 &&
+                splitContainer.Panel2.Controls[0] is Panel scrollPanel &&
+                scrollPanel.Controls.Count > 0 &&
+                scrollPanel.Controls[0] is PictureBox pictureBox)
+            {
+                pictureBox.SizeMode = sizeMode;
+
+                if (sizeMode == PictureBoxSizeMode.AutoSize)
+                {
+                    scrollPanel.AutoScrollMinSize = new Size(pictureBox.Image.Width, pictureBox.Image.Height);
+                }
+                else
+                {
+                    scrollPanel.AutoScrollMinSize = Size.Empty;
+                }
+
+                scrollPanel.AutoScroll = true;
+            }
+        }
+
+        private void AdjustScrollBars(PictureBox pictureBox)
+        {
+            // Získáme rozdíl mezi velikostí obrázku a panelu
+            Size sizeDifference = new Size(
+                Math.Max(0, pictureBox.Image.Width - splitContainer.Panel2.ClientSize.Width),
+                Math.Max(0, pictureBox.Image.Height - splitContainer.Panel2.ClientSize.Height));
+
+            // Nastavíme minimální velikost PictureBox, aby byly scrollbary správně nastaveny
+            pictureBox.MinimumSize = new Size(sizeDifference.Width, sizeDifference.Height);
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
@@ -163,7 +211,7 @@ namespace cv05
         {
             if (splitContainer.Panel2.Controls.Count > 0)
             {
-                var pictureBox = (PictureBox)splitContainer.Panel2.Controls[0];
+                var pictureBox = (PictureBox)splitContainer.Panel2.Controls[0].Controls[0];
                 Image img = pictureBox.Image;
                 img.RotateFlip((RotateFlipType)Enum.Parse(typeof(RotateFlipType), $"Rotate{angle}FlipNone"));
                 pictureBox.Image = img;
@@ -173,9 +221,9 @@ namespace cv05
         private void informaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Zkontrolujte, zda v detailním panelu existuje PictureBox s obrázkem
-            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0] is PictureBox)
+            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0].Controls[0] is PictureBox)
             {
-                PictureBox pictureBox = (PictureBox)splitContainer.Panel2.Controls[0];
+                PictureBox pictureBox = (PictureBox)splitContainer.Panel2.Controls[0].Controls[0];
                 if (pictureBox.Image != null)
                 {
                     // Zobrazte informace o obrázku
@@ -223,7 +271,7 @@ namespace cv05
 
         private void histogramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0] is PictureBox pictureBox)
+            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0].Controls[0] is PictureBox pictureBox)
             {
                 if (pictureBox.Image is Bitmap bitmap)
                 {
