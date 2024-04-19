@@ -147,6 +147,7 @@ namespace cv05
                 scrollPanel.Controls.Count > 0 &&
                 scrollPanel.Controls[0] is PictureBox pictureBox)
             {
+                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 if (centerImage)
                 {
                     pictureBox.Dock = DockStyle.Fill; // Centrování obrázku v panelu
