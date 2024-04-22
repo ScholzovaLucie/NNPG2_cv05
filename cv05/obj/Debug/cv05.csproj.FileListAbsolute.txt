@@ -8,4 +8,3 @@ C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafi
 C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.csproj.CoreCompileInputs.cache
 C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.exe
 C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.pdb
-C:\Users\lucka\OneDrive - Univerzita Pardubice\UPCE\ING 1.rocnik 2.semestr\grafika\cviceni\cv05\cv05\obj\Debug\cv05.csproj.SuggestedBindingRedirects.cache

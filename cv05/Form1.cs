@@ -72,7 +72,7 @@ namespace cv05
             int y = (numImages / (splitContainer.Panel1.Width / imageWidth)) * (imageHeight + margin);
 
             pictureBox.Location = new Point(x, y);
-            pictureBox.Click += PictureBox_Click; // Předpokládá, že PictureBox_Click je metoda pro zpracování kliknutí na obrázek
+            pictureBox.Click += PictureBox_Click; 
 
             splitContainer.Panel1.Controls.Add(pictureBox);
         }
@@ -87,13 +87,12 @@ namespace cv05
         {
             PictureBox detailPictureBox = new PictureBox();
             detailPictureBox.Image = image;
-            detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom; // Obrázek se přizpůsobí, ale zachová poměry stran
-            detailPictureBox.Dock = DockStyle.Fill; // Vyplní celý dostupný prostor
+            detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom; 
+            detailPictureBox.Dock = DockStyle.Fill; 
 
-            // Obrázek bude scrollovatelný pouze pokud je větší než Panel2
             Panel scrollablePanel = new Panel();
             scrollablePanel.AutoScroll = true;
-            scrollablePanel.Dock = DockStyle.Fill; // Vyplní celý Panel2
+            scrollablePanel.Dock = DockStyle.Fill; 
             scrollablePanel.Controls.Add(detailPictureBox);
 
             splitContainer.Panel2.Controls.Clear();
@@ -132,66 +131,25 @@ namespace cv05
 
         private void centrToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetImagePosition(true);
+            SetImageSizeMode(PictureBoxSizeMode.CenterImage);
         }
 
         private void levýHorníToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SetImagePosition(false);
+            SetImageSizeMode(PictureBoxSizeMode.Normal);
         }
 
-        private void SetImagePosition(bool centerImage)
-        {
-            if (splitContainer.Panel2.Controls.Count > 0 &&
-                splitContainer.Panel2.Controls[0] is Panel scrollPanel &&
-                scrollPanel.Controls.Count > 0 &&
-                scrollPanel.Controls[0] is PictureBox pictureBox)
-            {
-                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                if (centerImage)
-                {
-                    pictureBox.Dock = DockStyle.Fill; // Centrování obrázku v panelu
-                }
-                else
-                {
-                    pictureBox.Dock = DockStyle.None; // Necentrování, umístění v levém horním rohu
-                    pictureBox.Location = new Point(0, 0); // Pevné umístění v levém horním rohu
-                }
-            }
-        }
+
 
         private void SetImageSizeMode(PictureBoxSizeMode sizeMode)
         {
-            if (splitContainer.Panel2.Controls.Count > 0 &&
-                splitContainer.Panel2.Controls[0] is Panel scrollPanel &&
-                scrollPanel.Controls.Count > 0 &&
-                scrollPanel.Controls[0] is PictureBox pictureBox)
+            if (splitContainer.Panel2.Controls.Count > 0)
             {
+                var pictureBox = (PictureBox)splitContainer.Panel2.Controls[0].Controls[0];
                 pictureBox.SizeMode = sizeMode;
-
-                if (sizeMode == PictureBoxSizeMode.AutoSize)
-                {
-                    scrollPanel.AutoScrollMinSize = new Size(pictureBox.Image.Width, pictureBox.Image.Height);
-                }
-                else
-                {
-                    scrollPanel.AutoScrollMinSize = Size.Empty;
-                }
-
-                scrollPanel.AutoScroll = true;
             }
         }
 
-        private void AdjustScrollBars(PictureBox pictureBox)
-        {
-            // Získáme rozdíl mezi velikostí obrázku a panelu
-            Size sizeDifference = new Size(
-                Math.Max(0, pictureBox.Image.Width - splitContainer.Panel2.ClientSize.Width),
-                Math.Max(0, pictureBox.Image.Height - splitContainer.Panel2.ClientSize.Height));
-
-            // Nastavíme minimální velikost PictureBox, aby byly scrollbary správně nastaveny
-            pictureBox.MinimumSize = new Size(sizeDifference.Width, sizeDifference.Height);
-        }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
