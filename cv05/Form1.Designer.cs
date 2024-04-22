@@ -42,6 +42,7 @@
             this.originálníTiskováVelikostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.originálníPixelováVelikostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.roztaženíPřesPlochuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.přispůsobitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.informaceToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.otočeníToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,7 +63,6 @@
             // splitContainer.Panel1
             // 
             this.splitContainer.Panel1.AutoScroll = true;
-            this.splitContainer.Panel1.Resize += Panel1_Resize;
             // 
             // splitContainer.Panel2
             // 
@@ -154,7 +154,8 @@
             this.velikostToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.originálníTiskováVelikostToolStripMenuItem,
             this.originálníPixelováVelikostToolStripMenuItem,
-            this.roztaženíPřesPlochuToolStripMenuItem});
+            this.roztaženíPřesPlochuToolStripMenuItem,
+            this.přispůsobitToolStripMenuItem});
             this.velikostToolStripMenuItem.Name = "velikostToolStripMenuItem";
             this.velikostToolStripMenuItem.Size = new System.Drawing.Size(166, 22);
             this.velikostToolStripMenuItem.Text = "Velikost";
@@ -179,6 +180,13 @@
             this.roztaženíPřesPlochuToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
             this.roztaženíPřesPlochuToolStripMenuItem.Text = " roztažení přes plochu";
             this.roztaženíPřesPlochuToolStripMenuItem.Click += roztaženíPřesPlochuToolStripMenuItem_Click;
+            // 
+            // přispůsobitToolStripMenuItem
+            // 
+            this.přispůsobitToolStripMenuItem.Name = "přispůsobitToolStripMenuItem";
+            this.přispůsobitToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.přispůsobitToolStripMenuItem.Text = " přizpůsobit";
+            this.přispůsobitToolStripMenuItem.Click += přispůsobitToolStripMenuItem_Click;
             // 
             // informaceToolStripMenuItem
             // 
@@ -260,6 +268,7 @@
         private System.Windows.Forms.ToolStripMenuItem originálníTiskováVelikostToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem originálníPixelováVelikostToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem roztaženíPřesPlochuToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem přispůsobitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem informaceToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem otočeníToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;

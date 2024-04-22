@@ -34,7 +34,7 @@ namespace cv05
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                AddImageToPreview(openFileDialog.FileName);
+                AddImagePreview(openFileDialog.FileName);
                 this.Text = openFileDialog.FileName;
             }
         }
@@ -49,54 +49,42 @@ namespace cv05
 
                 foreach (string file in imageFiles)
                 {
-                    AddImageToPreview(file);
+                    AddImagePreview(file);
                 }
             }
         }
 
-        private void AddImageToPreview(string filePath)
+        private void AddImagePreview(string filePath)
         {
-            const int imageWidth = 75;
-            const int imageHeight = 75;
-            const int margin = 10;
+            int imageWidth = 75;
+            int imageHeight = 75;
+            int margin = 10;
             int numImages = splitContainer.Panel1.Controls.Count;
 
-            PictureBox pictureBox = new PictureBox();
-            pictureBox.Image = Image.FromFile(filePath);
-            pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox.Width = imageWidth;
-            pictureBox.Height = imageHeight;
+            System.Windows.Forms.Button imageButton = new System.Windows.Forms.Button();
+            Image image = Image.FromFile(filePath);
+            imageButton.BackgroundImage = image.GetThumbnailImage(imageWidth, imageHeight, null, IntPtr.Zero);
+            imageButton.BackgroundImageLayout = ImageLayout.Stretch;
+            imageButton.Size = new Size(imageWidth, imageHeight);
 
-            // Vypočítání pozice nového PictureBox
-            int x = (numImages % (splitContainer.Panel1.Width / imageWidth)) * (imageWidth + margin);
-            int y = (numImages / (splitContainer.Panel1.Width / imageWidth)) * (imageHeight + margin);
+            int x = (numImages % (splitContainer.Panel1.Width / (imageWidth + margin))) * (imageWidth + margin);
+            int y = (numImages / (splitContainer.Panel1.Width / (imageWidth + margin))) * (imageHeight + margin);
 
-            pictureBox.Location = new Point(x, y);
-            pictureBox.Click += PictureBox_Click; 
+            imageButton.Location = new Point(x, y);
+            imageButton.Click += (sender, e) => ShowImageInDetailPanel(image);
 
-            splitContainer.Panel1.Controls.Add(pictureBox);
+            splitContainer.Panel1.Controls.Add(imageButton);
         }
 
-        private void PictureBox_Click(object sender, EventArgs e)
-        {
-            PictureBox pictureBox = (PictureBox)sender;
-            ShowImageInDetailPanel(pictureBox.Image);
-        }
-
-      private void ShowImageInDetailPanel(Image image)
+        private void ShowImageInDetailPanel(Image image)
         {
             PictureBox detailPictureBox = new PictureBox();
             detailPictureBox.Image = image;
-            detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom; 
-            detailPictureBox.Dock = DockStyle.Fill; 
-
-            Panel scrollablePanel = new Panel();
-            scrollablePanel.AutoScroll = true;
-            scrollablePanel.Dock = DockStyle.Fill; 
-            scrollablePanel.Controls.Add(detailPictureBox);
+            detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            detailPictureBox.Dock = DockStyle.Fill;
 
             splitContainer.Panel2.Controls.Clear();
-            splitContainer.Panel2.Controls.Add(scrollablePanel);
+            splitContainer.Panel2.Controls.Add(detailPictureBox);
         }
 
         private void přidejObrázekToolStripMenuItem_Click(object sender, EventArgs e)
@@ -129,6 +117,27 @@ namespace cv05
             SetImageSizeMode(PictureBoxSizeMode.StretchImage);
         }
 
+        private void přispůsobitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0] is PictureBox detailPictureBox && detailPictureBox.Image != null)
+            {
+                Image image = detailPictureBox.Image;
+                float originalWidth = image.Width;
+                float originalHeight = image.Height;
+                float panelWidth = splitContainer.Panel2.Width;
+                float panelHeight = splitContainer.Panel2.Height;
+
+                float scaleFactor = Math.Min(panelWidth / originalWidth, panelHeight / originalHeight);
+
+                int newWidth = (int)(originalWidth * scaleFactor);
+                int newHeight = (int)(originalHeight * scaleFactor);
+
+                detailPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                detailPictureBox.Size = new Size(newWidth, newHeight);
+                detailPictureBox.Location = new Point((int)((panelWidth - newWidth) / 2), (int)((panelHeight - newHeight) / 2));
+            }
+        }
+
         private void centrToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SetImageSizeMode(PictureBoxSizeMode.CenterImage);
@@ -139,17 +148,14 @@ namespace cv05
             SetImageSizeMode(PictureBoxSizeMode.Normal);
         }
 
-
-
         private void SetImageSizeMode(PictureBoxSizeMode sizeMode)
         {
             if (splitContainer.Panel2.Controls.Count > 0)
             {
-                var pictureBox = (PictureBox)splitContainer.Panel2.Controls[0].Controls[0];
-                pictureBox.SizeMode = sizeMode;
+                var detailPictureBox = (PictureBox)splitContainer.Panel2.Controls[0];
+                detailPictureBox.SizeMode = sizeMode;
             }
         }
-
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
@@ -170,35 +176,25 @@ namespace cv05
         {
             if (splitContainer.Panel2.Controls.Count > 0)
             {
-                var pictureBox = (PictureBox)splitContainer.Panel2.Controls[0].Controls[0];
-                Image img = pictureBox.Image;
+                var detailPictureBox = (PictureBox)splitContainer.Panel2.Controls[0];
+                Image img = detailPictureBox.Image;
                 img.RotateFlip((RotateFlipType)Enum.Parse(typeof(RotateFlipType), $"Rotate{angle}FlipNone"));
-                pictureBox.Image = img;
+                detailPictureBox.Image = img;
             }
         }
 
         private void informaceToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Zkontrolujte, zda v detailním panelu existuje PictureBox s obrázkem
-            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0].Controls[0] is PictureBox)
+            // Check if there is a PictureBox with an image in the detail panel
+            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0] is PictureBox detailPictureBox && detailPictureBox.Image != null)
             {
-                PictureBox pictureBox = (PictureBox)splitContainer.Panel2.Controls[0].Controls[0];
-                if (pictureBox.Image != null)
-                {
-                    // Zobrazte informace o obrázku
-                    DisplayImageInfo(pictureBox.Image);
-                }
-                else
-                {
-                    MessageBox.Show("Žádný obrázek není načten.", "Informace", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                DisplayImageInfo(detailPictureBox.Image);
             }
             else
             {
                 MessageBox.Show("Žádný obrázek není načten.", "Informace", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
 
         private void DisplayImageInfo(Image image)
         {
@@ -219,31 +215,28 @@ namespace cv05
         private void InitializeProgressBar()
         {
             progressBar = new ProgressBar();
-            progressBar.Location = new Point(10, 10); // Pozice na formuláři
-            progressBar.Size = new Size(300, 20); // Velikost
-            progressBar.Style = ProgressBarStyle.Marquee; // Styl pro neustálou animaci
-            progressBar.MarqueeAnimationSpeed = 30; // Rychlost animace
-            progressBar.Visible = false; // Skrytí progress baru dokud není potřeba
+            progressBar.Location = new Point(10, 10); // Position on form
+            progressBar.Size = new Size(300, 20); // Size
+            progressBar.Style = ProgressBarStyle.Marquee; // Style for continuous animation
+            progressBar.MarqueeAnimationSpeed = 30; // Animation speed
+            progressBar.Visible = false; // Hide progress bar until needed
 
-            this.Controls.Add(progressBar); // Přidání progress baru do kolekce ovládacích prvků formuláře
+            this.Controls.Add(progressBar); // Add progress bar to form controls
         }
 
         private void histogramToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0].Controls[0] is PictureBox pictureBox)
+            if (splitContainer.Panel2.Controls.Count > 0 && splitContainer.Panel2.Controls[0] is PictureBox detailPictureBox && detailPictureBox.Image is Bitmap bitmap)
             {
-                if (pictureBox.Image is Bitmap bitmap)
-                {
-                    // Zobrazit progress bar před výpočtem
-                    progressBar.Visible = true;
-                    progressBar.Style = ProgressBarStyle.Marquee;
+                // Display progress bar before calculation
+                progressBar.Visible = true;
+                progressBar.Style = ProgressBarStyle.Marquee;
 
-                    // Spuštění výpočtu histogramu na samostatném vlákně, aby UI nezamrzlo
-                    Task.Run(() =>
-                    {
-                        ShowHistogram(bitmap);
-                    });
-                }
+                // Start histogram calculation on a separate thread to avoid freezing UI
+                Task.Run(() =>
+                {
+                    ShowHistogram(bitmap);
+                });
             }
         }
 
@@ -251,15 +244,15 @@ namespace cv05
         {
             var (red, green, blue) = CalculateHistogram(image);
 
-            // Vytvoření bitmapy pro zobrazení histogramu
-            Bitmap histogramBitmap = new Bitmap(256, 300); // Pro každou barvu zvlášť
+            // Create a bitmap for displaying the histogram
+            Bitmap histogramBitmap = new Bitmap(256, 300); // Separate for each color
             using (Graphics g = Graphics.FromImage(histogramBitmap))
             {
-                // Vygenerování histogramu
+                // Generate the histogram
                 DrawHistogramLines(g, red, green, blue);
             }
 
-            // Aktualizace UI musí být provedena na hlavním vlákně
+            // UI update must be performed on the main thread
             this.Invoke(new Action(() =>
             {
                 PictureBox histogramPictureBox = new PictureBox();
@@ -273,14 +266,14 @@ namespace cv05
                 histogramForm.Size = new Size(256, 300);
                 histogramForm.Show();
 
-                // Skrýt progress bar po dokončení
+                // Hide progress bar after completion
                 progressBar.Visible = false;
             }));
         }
 
         private void DrawHistogramLines(Graphics g, int[] red, int[] green, int[] blue)
         {
-            int histogramHeight = 100; // Výška pro každou složku
+            int histogramHeight = 100; // Height for each component
             for (int i = 0; i < 256; i++)
             {
                 g.DrawLine(Pens.Red, i, histogramHeight * 3, i, histogramHeight * 3 - (red[i] * histogramHeight / red.Max()));
@@ -309,31 +302,6 @@ namespace cv05
             return (redHistogram, greenHistogram, blueHistogram);
         }
 
-
-        private void Panel1_Resize(object sender, EventArgs e)
-        {
-            RearrangeImages();
-        }
-
-        private void RearrangeImages()
-        {
-            const int imageWidth = 75;
-            const int imageHeight = 75;
-            const int margin = 10;
-
-            int numColumns = splitContainer.Panel1.Width / (imageWidth + margin);
-            numColumns = Math.Max(1, numColumns); 
-
-            for (int i = 0; i < splitContainer.Panel1.Controls.Count; i++)
-            {
-                var control = splitContainer.Panel1.Controls[i];
-                if (control is PictureBox)
-                {
-                    int x = (i % numColumns) * (imageWidth + margin);
-                    int y = (i / numColumns) * (imageHeight + margin);
-                    control.Location = new Point(x, y);
-                }
-            }
-        }
+       
     }
 }
